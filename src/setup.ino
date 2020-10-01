@@ -46,8 +46,6 @@ void setup()
   if (Ethernet.begin() == 0)
   {
 #else
-  Ethernet.phyMode(HALF_DUPLEX_10);
-
   Ethernet.softreset();
 
   delay(1000);
@@ -91,9 +89,14 @@ void loop()
   delay(10000);
 
   Serial.println("Power back on the W5500 with '10BT Half-duplex, Auto-negotiation disabled'");
-  Ethernet.phyMode(HALF_DUPLEX_10);
 
+  Ethernet.phyMode(HALF_DUPLEX_10);
   Ethernet.softreset();
+  // or direct write the register value
+  //w5500.setPHYCFGR(0b11000000);
+  //w5500.setPHYCFGR(0b01000000);
+  //w5500.setPHYCFGR(0b11000000);
+  //w5500.softReset();
 
   if (Ethernet.begin(mac) == 0)
   {
