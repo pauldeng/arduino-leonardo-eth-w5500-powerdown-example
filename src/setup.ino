@@ -3,6 +3,7 @@
  */
 #include <SPI.h>
 #include <Ethernet3.h>
+#include <EthernetUdp3.h>
 #include "utility/w5500.h"
 
 #define SS 10  //W5500 CS
@@ -16,10 +17,14 @@
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 #endif
 
-// Initialize the Ethernet client library
-// with the IP address and port of the server
-// that you want to connect to (port 80 is default for HTTP):
-EthernetClient client;
+// A UDP instance to let us send and receive packets over UDP
+EthernetUDP Udp;
+
+unsigned int localPort = 8888; // local port to listen for UDP packets
+
+// destination server address
+const char serverDomain[] = "dengpeng.de";
+//IPAddress serverIp(3, 25, 113, 187);
 
 boolean state = true;
 void setup()
@@ -75,6 +80,15 @@ void setup()
 
   digitalWrite(SS, HIGH);
 
+  // initlise the udp
+  Udp.begin(localPort);
+  // you can send a packet requesting a timestamp:
+  Udp.beginPacket(serverDomain, 8888); // send to domain name
+  //Udp.beginPacket(serverIp, 8888); // send to ip address
+  Udp.print("Start");
+  Udp.endPacket();
+  Udp.stop();
+
   delay(10000);
 }
 void loop()
@@ -114,6 +128,15 @@ void loop()
   }
   Serial.println();
   digitalWrite(SS, HIGH);
+
+  // initlise the udp
+  Udp.begin(localPort);
+  // you can send a packet requesting a timestamp:
+  Udp.beginPacket(serverDomain, 8888); // send to domain name
+  //Udp.beginPacket(serverIp, 8888); // send to ip address
+  Udp.print("Wake up");
+  Udp.endPacket();
+  Udp.stop();
 
   Serial.print("Ethernet speed: ");
   Serial.print(Ethernet.speed());
