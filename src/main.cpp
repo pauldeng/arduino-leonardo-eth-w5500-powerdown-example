@@ -84,6 +84,7 @@ void setup()
   //Udp.beginPacket(serverIp, 8888); // send to ip address
   Udp.print("Start");
   Udp.endPacket();
+  Udp.stop();
 
   delay(10000);
 }
@@ -140,6 +141,7 @@ void loop()
   //Udp.beginPacket(serverIp, 8888); // send to ip address
   Udp.print("Wake up");
   Udp.endPacket();
+  Udp.stop();
 
   Serial.println();
 
